@@ -1,6 +1,10 @@
 #! /usr/bin/env python3
+from textual.app import App, ComposeResult
+
 from player import Player
 from roll_dice import roll_dice
+
+# class InitiativeApp(App):
 
 
 def main():
