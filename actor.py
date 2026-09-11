@@ -3,6 +3,7 @@ class Actor:
         self.name = name
         self.hp = hp
         self.ac = ac
+        self.init_roll = init_roll
         self.condition = ""
 
     def take_damage(self, total):
