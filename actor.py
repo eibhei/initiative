@@ -4,3 +4,12 @@ class Actor:
         self.hp = hp
         self.ac = ac
         self.condition = ""
+
+    def take_damage(self, total):
+        pass
+
+    def heal_damage(self, total):
+        pass
+
+    def gain_condition(self, condition):
+        pass
