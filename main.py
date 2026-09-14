@@ -1,11 +1,9 @@
 #! /usr/bin/env python3
 from textual.app import App, ComposeResult
+from textual.widgets import DataTable, Footer, Header
 
 from player import Player
 from roll_dice import roll_dice
-
-# class InitiativeApp(App):
-
 
 def main():
     initiative_order = []
@@ -36,10 +34,42 @@ def main():
 
     sorted_initiative = sorted(initiative_order, key=lambda x: x.init_roll, reverse=True)
 
-    print(f"The order of initiative is as follows:")
+    init_list = [
+        ("Initiative Roll", "Name", "Player Name", "Hit Points", "Armour Class")
+    ]
+
     for a in sorted_initiative:
-        print(f"{a.name} ({a.init_roll})")
+        init_list.append((a.init_roll, a.name, a.player_name, a.hp, a.ac))
+
+    return init_list
+
+class InitiativeApp(App):
+    """A Textual app to manage initiative."""
+
+    BINDINGS = [
+        ("d", "toggle_dark", "Toggle dark mode"),
+        ("q", "quit", "Quit the app")
+    ]
+
+    def compose(self) -> ComposeResult:
+        """Create child widgets for the app."""
+        yield Header()
+        yield DataTable()
+        yield Footer()
+
+    def on_mount(self) -> None:
+        table = self.query_one(DataTable)
+        table.add_columns(*init_list[0])
+        table.add_rows(init_list[1:])
+
+    def action_toggle_dark(self) -> None:
+        """An action to toggle dark mode"""
+        self.theme = (
+            "textual-dark" if self.theme == "textual-light" else "textual-light"
+        )
 
 
 if __name__ == "__main__":
-    main()
+    init_list = main()
+    app = InitiativeApp()
+    app.run()
