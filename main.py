@@ -3,7 +3,8 @@ from textual.app import App, ComposeResult
 from textual.widgets import DataTable, Footer, Header
 
 from player import Player
-from roll_dice import roll_dice
+# from roll_dice import roll_dice
+
 
 def main():
     initiative_order = []
@@ -23,7 +24,6 @@ def main():
 
     initiative_order.append(Player(name, player_name, init_roll, hp, ac))
 
-
     name = "Frodo"
     player_name = "Elijah"
     init_roll = 18
@@ -35,7 +35,7 @@ def main():
     sorted_initiative = sorted(initiative_order, key=lambda x: x.init_roll, reverse=True)
 
     init_list = [
-        ("Initiative Roll", "Name", "Player Name", "Hit Points", "Armour Class")
+        ("Initiative", "Name", "Player", "Hit Points", "Armour Class")
     ]
 
     for a in sorted_initiative:
@@ -45,15 +45,15 @@ def main():
 
 class InitiativeApp(App):
     """A Textual app to manage initiative."""
-
+    # ansi_color=True
     BINDINGS = [
-        ("d", "toggle_dark", "Toggle dark mode"),
-        ("q", "quit", "Quit the app")
+        ("a", "add", "Add to initiative"),
+        ("q", "quit", "Quit"),
     ]
 
     def compose(self) -> ComposeResult:
         """Create child widgets for the app."""
-        yield Header()
+        # yield Header()
         yield DataTable()
         yield Footer()
 
