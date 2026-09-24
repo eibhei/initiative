@@ -2,7 +2,6 @@
 from textual.app import App, ComposeResult
 from textual.containers import Horizontal
 from textual.widgets import DataTable, Footer, Header, Input
-
 from player import Player
 # from roll_dice import roll_dice
 
