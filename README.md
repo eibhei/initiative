@@ -11,3 +11,6 @@ Be able to track an arbitrary number of players and enemies in initiative order,
 - [ ] Track death saves
 - [ ] Add bonus hit points if need be
 - [ ] Add optional notes for each actor
+
+### Bonus features
+- [ ] Save and restore sessions
