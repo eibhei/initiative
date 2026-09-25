@@ -1,19 +1,19 @@
 #! /usr/bin/env python3
 from textual.app import App, ComposeResult
 from textual.containers import VerticalScroll
-from textual.screen import Screen, ModalScreen
+from textual.screen import ModalScreen
 from textual.widget import Widget
 from textual.widgets import (
     Button,
     DataTable,
     Footer,
+    Header,
     Input,
     Label,
 )
 
 from player import Player
-
-# from roll_dice import roll_dice
+from roll_dice import roll_dice
 
 
 def main():
@@ -99,6 +99,7 @@ class InitiativeApp(App):
 
     def compose(self) -> ComposeResult:
         """Create child widgets for the app."""
+        yield Header()
         yield DataTable(id="initiative_table")
         yield Footer()
 
@@ -114,7 +115,7 @@ class InitiativeApp(App):
     def action_add_actor(self) -> None:
         self.push_screen(AddActor())
         character_input = self.screen.query_one("#char")
-        self.set_focus(character_input)
+        self.set_focus(character_input) #FIXME: This doesn't work
 
 if __name__ == "__main__":
     init_list = main()
