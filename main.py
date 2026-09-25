@@ -1,8 +1,10 @@
 #! /usr/bin/env python3
 from textual.app import App, ComposeResult
+from textual.containers import VerticalScroll
 from textual.screen import Screen, ModalScreen
 from textual.widget import Widget
 from textual.widgets import (
+    Button,
     DataTable,
     Footer,
     Input,
@@ -50,58 +52,54 @@ def main():
 
 class LabelledInput(Widget):
     """The screen for adding a new actor to the initiative order"""
-    DEFAULT_CSS = """
-    LabelledInput {
-        layout: horizontal;
-        height: auto;
-    }
-    LabelledInput Label {
-        padding: 1;
-        width: 12;
-        text-align: right;
-    }
-    LabelledInput Input {
-        width: 1fr;
-    }
-    """
 
-    def __init__(self, label: str, placeholder: str | None = None) -> None:
+    def __init__(self, label: str, placeholder: str | None = None, id: str | None = None) -> None:
         super().__init__()
         self.label = label
         self.placeholder = placeholder if placeholder is not None else ""
+        self.id = id if id is not None else ""
 
     def compose(self) -> ComposeResult:
         yield Label(self.label)
-        yield Input(placeholder=self.placeholder)
+        yield Input(placeholder=self.placeholder, id=self.id)
 
 class AddActor(ModalScreen):
+    """Screen for entering new actors into initiative order"""
+
     BINDINGS = [("escape", "app.pop_screen", "Pop screen")]
 
     def compose(self) -> ComposeResult:
-        yield LabelledInput("Character")
-        yield LabelledInput("Player name", "Leave blank for NPC")
-        yield LabelledInput("Hit Points")
-        yield LabelledInput("Armour Class")
-        yield LabelledInput("Initiative", "Ctrl+R to roll")
-        yield LabelledInput("Conditions")
-        yield LabelledInput("Notes")
+        yield VerticalScroll(
+            LabelledInput("Character", id="char"),
+            LabelledInput("Player name", "Leave blank for NPC", id="player"),
+            LabelledInput("Hit Points", id="hp"),
+            LabelledInput("Armour Class", id="ac"),
+            LabelledInput("Initiative", "Ctrl+R to roll", id="init"),
+            LabelledInput("Conditions", id="status"),
+            LabelledInput("Notes", id="notes"),
+            Button("Submit", variant="primary", id="submit"),
+            id="overlay"
+        )
+
 
 class InitiativeApp(App):
     """A Textual app to manage initiative."""
-    CSS = """
-    """
+
     ansi_color = True
+    CSS_PATH = "app.tcss"
     ENABLE_COMMAND_PALETTE = False
+    # SCREENS = {"add_actor": AddActor}
+
     BINDINGS = [
         ("n", "next_actor", "Next"),
         ("a", "add_actor", "Add"),
         ("^q", "quit", "Quit"),
     ]
-    SCREENS = {"add_actor": AddActor}
+
 
     def compose(self) -> ComposeResult:
         """Create child widgets for the app."""
-        yield DataTable()
+        yield DataTable(id="initiative_table")
         yield Footer()
 
     def on_mount(self) -> None:
@@ -115,6 +113,8 @@ class InitiativeApp(App):
 
     def action_add_actor(self) -> None:
         self.push_screen(AddActor())
+        character_input = self.screen.query_one("#char")
+        self.set_focus(character_input)
 
 if __name__ == "__main__":
     init_list = main()

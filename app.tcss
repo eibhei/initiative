@@ -1,0 +1,39 @@
+AddActor {
+    align: center middle;
+}
+
+#overlay {
+    /*grid-size: 2;
+    grid-gutter: 1 2;
+    grid-rows: 1fr 3;*/
+    padding: 0 1;
+    width: 90%;
+    height: 90%;
+    border: thick $background 80%;
+    /*background: $surface;*/
+}
+
+Button {
+    width: 100%;
+    height: 3;
+    margin: 1 1 1 13;
+}
+
+LabelledInput {
+    layout: horizontal;
+    height: 3;
+    margin: 1;
+}
+
+LabelledInput Label {
+    width: 12;
+    text-align: left;
+    padding-top: 1;
+    padding-bottom: 1;
+}
+
+LabelledInput Input {
+    width: 1fr;
+    height: 3;
+    /*margin: 0;*/
+}
