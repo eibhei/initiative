@@ -8,6 +8,7 @@ Be able to track an arbitrary number of players and enemies in initiative order,
 - [x] Write basic logic for holding player/enemy information and order
 - [x] Set up dice rolls for initiative calculation in-app
 - [ ] Make combat conditions do things
+  - https://roll20.net/compendium/dnd5e/Conditions#content
 - [ ] Track death saves
 - [ ] Add bonus hit points if need be
 - [ ] Add optional notes for each actor
