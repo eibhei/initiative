@@ -5,5 +5,6 @@
 
 
 class Condition:
-    def __init__(self, name: str) -> None:
-        pass
+    def __init__(self, name: str, glyph: str) -> None:
+        self.name = name
+        self.glyph = glyph
