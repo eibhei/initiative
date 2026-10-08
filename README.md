@@ -1,8 +1,10 @@
 # initiative.py
 A terminal-based initiative tracker for Dungeons and Dragons
 
+After cloning the repo, run `uv sync` to pull in the correct dependencies, and then `uv run main.py` to run the program.
+
 ## Project Scope
-Be able to track an arbitrary number of players and enemies in initiative order, roll for initiative, track health, AC, and any other applied conditions.
+Be able to track an arbitrary number of players and enemies in initiative order, roll for initiative, track health, AC, and any other conditions.
 
 ## Project Plan
 - [x] Write basic logic for holding player/enemy information and order
@@ -25,3 +27,4 @@ Be able to track an arbitrary number of players and enemies in initiative order,
 - [ ] Create a new line in the table from AddActor()
   - See https://textual.textualize.io/guide/screens/#returning-data-from-screens
 - [ ] Style the table, highlight the current player
+
