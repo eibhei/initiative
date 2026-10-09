@@ -70,6 +70,8 @@ class AddActor(ModalScreen):
 
     def compose(self) -> ComposeResult:
         yield VerticalScroll(
+            # Add typing to this section where appropriate
+            #   https://textual.textualize.io/widgets/input/#input-types
             LabelledInput("Character", id="char"),
             LabelledInput("Player name", "Leave blank for NPC", id="player"),
             LabelledInput("Hit Points", id="hp"),
@@ -81,6 +83,12 @@ class AddActor(ModalScreen):
             id="overlay"
         )
 
+    def on_button_pressed(self, event: Button.Pressed) -> None:
+        if event.button.id == "submit":
+            # Query the input here; have a look at the latest conversation with Boots
+            self.dismiss(True)
+        else:
+            self.dismiss(False)
 
 class InitiativeApp(App):
     """A Textual app to manage initiative."""
@@ -88,14 +96,12 @@ class InitiativeApp(App):
     ansi_color = True
     CSS_PATH = "app.tcss"
     ENABLE_COMMAND_PALETTE = False
-    # SCREENS = {"add_actor": AddActor}
 
     BINDINGS = [
         ("n", "next_actor", "Next"),
         ("a", "add_actor", "Add"),
         ("^q", "quit", "Quit"),
     ]
-
 
     def compose(self) -> ComposeResult:
         """Create child widgets for the app."""
@@ -114,8 +120,9 @@ class InitiativeApp(App):
 
     def action_add_actor(self) -> None:
         self.push_screen(AddActor())
-        character_input = self.screen.query_one("#char")
-        self.set_focus(character_input) #FIXME: This doesn't work
+
+        character_input = self.screen.query_one(Input)
+        self.set_focus(character_input) #FIXME: This works, but it's not a robust solution
 
 if __name__ == "__main__":
     init_list = main()
