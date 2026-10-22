@@ -76,19 +76,33 @@ class AddActor(ModalScreen):
             LabelledInput("Player name", "Leave blank for NPC", id="player"),
             LabelledInput("Hit Points", id="hp"),
             LabelledInput("Armour Class", id="ac"),
-            LabelledInput("Initiative", "Ctrl+R to roll", id="init"),
+            LabelledInput("Initiative", "Ctrl+R to roll", id="init"),       # Need to code this in
             LabelledInput("Conditions", id="status"),
             LabelledInput("Notes", id="notes"),
             Button("Submit", variant="primary", id="submit"),
             id="overlay"
         )
 
-    def on_button_pressed(self, event: Button.Pressed) -> None:
+    def on_submit(self, event: Button.Pressed) -> None:
         if event.button.id == "submit":
+            # Validate inputs 
+                # Character must be a string
+                # Player name must be a string or None 
+                # Hit points must be an integar
+                # AC must be an integar
+                # Initiative must be an integar
+                # Conditions must be None or member of the conditions list 
+                # Notes must be None or string
+            # Make sure everything is in order
+            # Return data in the format that add_row() requires
+                # https://textual.textualize.io/widgets/data_table/#textual.widgets._data_table.DataTable.add_row
             # Query the input here; have a look at the latest conversation with Boots
-            self.dismiss(True)
-        else:
-            self.dismiss(False)
+            pass
+        
+    def roll_for_initiative() -> None:
+        pass
+        # Confirm focused input has id "init"
+        # Do the roll (how do we specify the bonus?)
 
 class InitiativeApp(App):
     """A Textual app to manage initiative."""
