@@ -1,5 +1,5 @@
 # initiative.py
-A terminal-based initiative tracker for Dungeons and Dragons
+A terminal-based initiative tracker for Dungeons and Dragons. Created as a part of my personal project for [boot.dev](https://boot.dev).
 
 After cloning the repo, run `uv sync` to pull in the correct dependencies, and then `uv run main.py` to run the program. To handle code updates on the fly, run `uv run textual run --dev main.py`.
 
@@ -24,10 +24,11 @@ Be able to track an arbitrary number of players and enemies in initiative order,
   - Probably worth having some way to undo or travel back in case of accidental keypresses
 - [ ] Add a round tracker in header
   - See https://textual.textualize.io/widgets/header/
-- [ ] Create a new line in the table from AddActor()
+- [x] Create a new line in the table from AddActor()
   - See https://textual.textualize.io/guide/screens/#returning-data-from-screens
 - [ ] Style the table, highlight the current player
 - [ ] Fix the autofocus in the add dialogue
+- [ ] Implement row keys
 
 
 ## AI Statement

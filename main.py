@@ -12,29 +12,13 @@ from textual.widgets import (
     Label,
 )
 
-from player import Player
-from roll_dice import roll_dice
+from actor import Actor
+
+# from roll_dice import roll_dice
 
 
 def main():
-    initiative_order = []
-    # name = input("Character name: ")
-    # player_name = input("Player name: ")
-    # init_roll = int(input("Initiative roll: "))
-    # hp = int(input("Hit points: "))
-    # ac = int(input("Armour class: "))
-    # initiative_order.append(Player(name, player_name, init_roll, hp, ac))
-
-    name, player_name, init_roll, hp, ac = "Aragorn", "Viggo", 15, 30, 15
-    initiative_order.append(Player(name, player_name, init_roll, hp, ac))
-
-    name, player_name, init_roll, hp, ac = "Frodo", "Elijah", 18, 30, 15
-    initiative_order.append(Player(name, player_name, init_roll, hp, ac))
-
-    name, player_name, init_roll, hp, ac = "Gimli", "John", 5, 30, 15
-    initiative_order.append(Player(name, player_name, init_roll, hp, ac))
-
-    init_list = [
+    init_headings = [
         (
             "Initiative",
             "Name",
@@ -45,10 +29,8 @@ def main():
             "Notes",
         )
     ]
-    for a in initiative_order:
-        init_list.append((a.init_roll, a.name, a.player_name, a.hp, a.ac))
 
-    return init_list
+    return init_headings
 
 class LabelledInput(Widget):
     """The screen for adding a new actor to the initiative order"""
@@ -63,6 +45,10 @@ class LabelledInput(Widget):
         yield Label(self.label)
         yield Input(placeholder=self.placeholder, id=self.id)
 
+    @property
+    def value(self) -> str:
+        return self.query_one(Input).value
+
 class AddActor(ModalScreen):
     """Screen for entering new actors into initiative order"""
 
@@ -72,7 +58,7 @@ class AddActor(ModalScreen):
         yield VerticalScroll(
             # Add typing to this section where appropriate
             #   https://textual.textualize.io/widgets/input/#input-types
-            LabelledInput("Character", id="char"),
+            LabelledInput("Character name", id="name"),
             LabelledInput("Player name", "Leave blank for NPC", id="player"),
             LabelledInput("Hit Points", id="hp"),
             LabelledInput("Armour Class", id="ac"),
@@ -83,23 +69,41 @@ class AddActor(ModalScreen):
             id="overlay"
         )
 
-    def on_submit(self, event: Button.Pressed) -> None:
-        if event.button.id == "submit":
-            # Validate inputs 
-                # Character must be a string
-                # Player name must be a string or None 
-                # Hit points must be an integar
-                # AC must be an integar
-                # Initiative must be an integar
-                # Conditions must be None or member of the conditions list 
-                # Notes must be None or string
-            # Make sure everything is in order
-            # Return data in the format that add_row() requires
-                # https://textual.textualize.io/widgets/data_table/#textual.widgets._data_table.DataTable.add_row
-            # Query the input here; have a look at the latest conversation with Boots
-            pass
-        
-    def roll_for_initiative() -> None:
+    def on_button_pressed(self, event: Button.Pressed) -> None:
+        # Validate inputs
+            # Character must be a string
+            # Player name must be a string or None
+            #   If None, then a value needs returning to mark it as the DM
+            # Hit points must be an integar
+            # AC must be an integar
+            # Initiative must be an integar
+            # Conditions must be None or member of the conditions list
+            # Notes must be None or string
+        # Make sure everything is in order
+        # Return data in the format that add_row() requires
+            # https://textual.textualize.io/widgets/data_table/#textual.widgets._data_table.DataTable.add_row
+        # Query the input here; have a look at the latest conversation with Boots
+        input_name = self.query_one("#name", LabelledInput).value
+        input_player = self.query_one("#player", LabelledInput).value
+        input_hp = self.query_one("#hp", LabelledInput).value
+        input_ac = self.query_one("#ac", LabelledInput).value
+        input_init = self.query_one("#init", LabelledInput).value
+        input_cond = self.query_one("#status", LabelledInput).value
+        input_notes = self.query_one("#notes", LabelledInput).value
+
+        new_actor = Actor(
+            input_name,
+            int(input_init),
+            int(input_hp),
+            int(input_ac),
+            player_name = input_player if input_player is not "" else "DM",
+            condition = input_cond,
+            notes = input_notes
+        )
+
+        self.dismiss(new_actor)
+
+    def roll_for_initiative(self) -> None:
         pass
         # Confirm focused input has id "init"
         # Do the roll (how do we specify the bonus?)
@@ -133,10 +137,18 @@ class InitiativeApp(App):
         table.sort("Initiative", "Name", reverse=True)
 
     def action_add_actor(self) -> None:
-        self.push_screen(AddActor())
+        self.push_screen(AddActor(), callback=self.on_actor_added)
 
         character_input = self.screen.query_one(Input)
         self.set_focus(character_input) #FIXME: This works, but it's not a robust solution
+                                        #       And should maybe just be added in the screen constructor?
+
+    def on_actor_added(self, new_actor: Actor | None) -> None:
+        if new_actor is None:
+            return
+
+        table = self.query_one(DataTable)
+        table.add_row((new_actor.init_roll), (new_actor.name), (new_actor.player_name), (new_actor.hp), (new_actor.ac), (new_actor.condition), (new_actor.notes))
 
 if __name__ == "__main__":
     init_list = main()
