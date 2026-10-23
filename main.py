@@ -72,17 +72,17 @@ class AddActor(ModalScreen):
     def on_button_pressed(self, event: Button.Pressed) -> None:
         # Validate inputs
             # Character must be a string
-            # Player name must be a string or None
-            #   If None, then a value needs returning to mark it as the DM
+            # Player name must be a string or empty
             # Hit points must be an integar
             # AC must be an integar
             # Initiative must be an integar
-            # Conditions must be None or member of the conditions list
-            # Notes must be None or string
-        # Make sure everything is in order
-        # Return data in the format that add_row() requires
-            # https://textual.textualize.io/widgets/data_table/#textual.widgets._data_table.DataTable.add_row
-        # Query the input here; have a look at the latest conversation with Boots
+            # Conditions must be member of the conditions list
+            #   A few ways to do this:
+            #       https://textual.textualize.io/widgets/checkbox/     <- I think this is the way to do it
+            #       https://textual.textualize.io/widgets/list_view/
+            #       https://textual.textualize.io/widgets/option_list/
+            #       https://textual.textualize.io/widgets/radiobutton/
+
         input_name = self.query_one("#name", LabelledInput).value
         input_player = self.query_one("#player", LabelledInput).value
         input_hp = self.query_one("#hp", LabelledInput).value
@@ -96,7 +96,7 @@ class AddActor(ModalScreen):
             int(input_init),
             int(input_hp),
             int(input_ac),
-            player_name = input_player if input_player is not "" else "DM",
+            player_name = input_player if input_player != "" else "DM",
             condition = input_cond,
             notes = input_notes
         )
