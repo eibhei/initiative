@@ -1,6 +1,6 @@
 #! /usr/bin/env python3
 from textual.app import App, ComposeResult
-from textual.containers import VerticalScroll
+from textual.containers import Center, VerticalScroll
 from textual.screen import ModalScreen
 from textual.widget import Widget
 from textual.widgets import (
@@ -10,6 +10,8 @@ from textual.widgets import (
     Header,
     Input,
     Label,
+    ProgressBar,
+    Rule
 )
 
 from actor import Actor
@@ -49,6 +51,19 @@ class LabelledInput(Widget):
     def value(self) -> str:
         return self.query_one(Input).value
 
+class RoundTracker(Widget):
+    """The round tracker heading for the main screen"""
+
+    def __init__(self, round_number: int | 0 = 0) -> None:
+        super().__init__()
+        self.round_number = round_number
+
+    def compose(self) -> ComposeResult:
+        yield Label(f"Round number: {self.round_number}")
+        yield ProgressBar(total=100, show_eta=False, show_percentage=False)
+        yield Button("Next", variant="primary", id="next")
+
+
 class AddActor(ModalScreen):
     """Screen for entering new actors into initiative order"""
 
@@ -71,6 +86,7 @@ class AddActor(ModalScreen):
 
     def on_button_pressed(self, event: Button.Pressed) -> None:
         # Validate inputs
+
             # Character must be a string
             # Player name must be a string or empty
             # Hit points must be an integar
@@ -83,6 +99,7 @@ class AddActor(ModalScreen):
             #       https://textual.textualize.io/widgets/option_list/
             #       https://textual.textualize.io/widgets/radiobutton/
 
+        # Parse inputs
         input_name = self.query_one("#name", LabelledInput).value
         input_player = self.query_one("#player", LabelledInput).value
         input_hp = self.query_one("#hp", LabelledInput).value
@@ -114,6 +131,7 @@ class InitiativeApp(App):
     ansi_color = True
     CSS_PATH = "app.tcss"
     ENABLE_COMMAND_PALETTE = False
+    TITLE = "Initiative Tracker"
 
     BINDINGS = [
         ("n", "next_actor", "Next"),
@@ -125,6 +143,8 @@ class InitiativeApp(App):
         """Create child widgets for the app."""
         yield Header()
         yield DataTable(id="initiative_table")
+        yield Rule(line_style="dashed")
+        yield RoundTracker()
         yield Footer()
 
     def on_mount(self) -> None:
@@ -135,6 +155,8 @@ class InitiativeApp(App):
         table.fixed_rows = 0
         table.cursor_type = "row"
         table.sort("Initiative", "Name", reverse=True)
+
+        current_round = 0
 
     def action_add_actor(self) -> None:
         self.push_screen(AddActor(), callback=self.on_actor_added)
@@ -149,6 +171,9 @@ class InitiativeApp(App):
 
         table = self.query_one(DataTable)
         table.add_row((new_actor.init_roll), (new_actor.name), (new_actor.player_name), (new_actor.hp), (new_actor.ac), (new_actor.condition), (new_actor.notes))
+
+    def next_turn(self) -> None:
+        pass
 
 if __name__ == "__main__":
     init_list = main()
