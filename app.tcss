@@ -71,3 +71,10 @@ RoundTracker Button {
     height: 100%;
     margin: 0;
 }
+/*
+DataTable > .datatable--cursor {
+    background: $accent;
+    color: $text;
+    text-style: bold;
+    height: 5fr;
+}*/

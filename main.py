@@ -1,4 +1,5 @@
 #! /usr/bin/env python3
+from rich.text import Text
 from textual.app import App, ComposeResult
 from textual.containers import Center, VerticalScroll
 from textual.screen import ModalScreen
@@ -11,7 +12,7 @@ from textual.widgets import (
     Input,
     Label,
     ProgressBar,
-    Rule
+    Rule,
 )
 
 from actor import Actor
@@ -143,7 +144,7 @@ class InitiativeApp(App):
         """Create child widgets for the app."""
         yield Header()
         yield DataTable(id="initiative_table")
-        yield Rule(line_style="dashed")
+        yield Rule(line_style="solid")
         yield RoundTracker()
         yield Footer()
 
@@ -170,7 +171,12 @@ class InitiativeApp(App):
             return
 
         table = self.query_one(DataTable)
-        table.add_row((new_actor.init_roll), (new_actor.name), (new_actor.player_name), (new_actor.hp), (new_actor.ac), (new_actor.condition), (new_actor.notes))
+        row_count = table.row_count
+        if row_count == 0:
+            h_value = 3
+        else:
+            h_value = 1
+        table.add_row((new_actor.init_roll), (new_actor.name), (new_actor.player_name), (new_actor.hp), (new_actor.ac), (new_actor.condition), (new_actor.notes), height=h_value)
 
     def next_turn(self) -> None:
         pass
