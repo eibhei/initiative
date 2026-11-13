@@ -3,49 +3,34 @@ Placeholder {
 }
 
 #top {
-    height: 50%;
+    height: 15%;
     width: 100%;
     layout: grid;
-    grid-size: 2 2;
+    grid-size: 3 1;
 }
 
-#left {
-    row-span: 2;
+#middle {
+    height: 70%;
+    width: 100%;
 }
 
-#bot {
-    height: 50%;
+#bottom {
+    height: 15%;
     width: 100%;
     layout: grid;
-    grid-size: 8 8;
+    grid-size: 10 1;
 }
 
-#c1 {
-    row-span: 4;
-    column-span: 8;
+.buttons {
+    column-span: 1;
+}
+
+#gap {
+    column-span: 6;
+}
+
+#roundinfo {
+    layout: grid;
+    grid-size: 1 2;
     height: 100%;
-}
-
-#col1, #col2, #col3 {
-    width: 1fr;
-}
-
-#p1 {
-    row-span: 4;
-    column-span: 4;
-}
-
-#p2 {
-    row-span: 2;
-    column-span: 4;
-}
-
-#p3 {
-    row-span: 2;
-    column-span: 2;
-}
-
-#p4 {
-    row-span: 1;
-    column-span: 2;
 }
