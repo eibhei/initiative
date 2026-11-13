@@ -21,13 +21,13 @@ class Actor:
         self.notes = notes
 
     def take_damage(self, total: int):
-        pass
+        self.hp -= total
 
     def heal_damage(self, total: int):
-        pass
+        self.hp += total
 
     def gain_condition(self, condition: Condition):
         pass
 
-    def add_note(self):
-        pass
+    def add_note(self, note: str):
+        self.notes = note

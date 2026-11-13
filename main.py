@@ -19,7 +19,6 @@ from actor import Actor
 
 # from roll_dice import roll_dice
 
-
 def main():
     init_headings = [
         (
@@ -99,6 +98,7 @@ class AddActor(ModalScreen):
             #       https://textual.textualize.io/widgets/list_view/
             #       https://textual.textualize.io/widgets/option_list/
             #       https://textual.textualize.io/widgets/radiobutton/
+            #       https://textual.textualize.io/widgets/select/       <- Or this might be good actually
 
         # Parse inputs
         input_name = self.query_one("#name", LabelledInput).value
@@ -150,9 +150,9 @@ class InitiativeApp(App):
 
     def on_mount(self) -> None:
         table = self.query_one(DataTable)
-        for col in init_list[0]:
+        for col in table_columns[0]:
             table.add_column(col, key=col)
-        table.add_rows(init_list[1:])
+        table.add_rows(initiative_list[0:])
         table.fixed_rows = 0
         table.cursor_type = "row"
         table.sort("Initiative", "Name", reverse=True)
@@ -182,6 +182,7 @@ class InitiativeApp(App):
         pass
 
 if __name__ == "__main__":
-    init_list = main()
+    table_columns = main()
+    initiative_list = []
     app = InitiativeApp()
     app.run()

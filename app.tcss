@@ -7,10 +7,10 @@ AddActor {
     grid-gutter: 1 2;
     grid-rows: 1fr 3;*/
     padding: 0 1;
-    width: 90%;
+    max-width: 60%;
     height: 90%;
-    border: thick $background 80%;
-    /*background: $surface;*/
+    border: thick $accent 75%;
+    /*background: ;*/
 }
 
 #overlay Button {
