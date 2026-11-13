@@ -1,0 +1,32 @@
+#top {
+    height: 15%;
+    width: 100%;
+    layout: grid;
+    grid-size: 3 1;
+}
+
+#middle {
+    height: 70%;
+    width: 100%;
+}
+
+#bottom {
+    height: 15%;
+    width: 100%;
+    layout: grid;
+    grid-size: 10 1;
+}
+
+.buttons {
+    column-span: 1;
+}
+
+#gap {
+    column-span: 6;
+}
+
+#roundinfo {
+    layout: grid;
+    grid-size: 1 2;
+    height: 100%;
+}
