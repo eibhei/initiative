@@ -16,23 +16,10 @@ from textual.widgets import (
 )
 
 from actor import Actor
+from constants import HEADINGS
+from initiative import InitiativeList
+from roll_dice import roll_dice
 
-# from roll_dice import roll_dice
-
-def main():
-    init_headings = [
-        (
-            "Initiative",
-            "Name",
-            "Player",
-            "Hit Points",
-            "Armour Class",
-            "Condition",
-            "Notes",
-        )
-    ]
-
-    return init_headings
 
 class LabelledInput(Widget):
     """The screen for adding a new actor to the initiative order"""
@@ -150,39 +137,34 @@ class InitiativeApp(App):
 
     def on_mount(self) -> None:
         table = self.query_one(DataTable)
-        for col in table_columns[0]:
+        for col in HEADINGS:
             table.add_column(col, key=col)
-        table.add_rows(initiative_list[0:])
+        # table.add_rows(initiative_list)
         table.fixed_rows = 0
         table.cursor_type = "row"
         table.sort("Initiative", "Name", reverse=True)
-
-        current_round = 0
 
     def action_add_actor(self) -> None:
         self.push_screen(AddActor(), callback=self.on_actor_added)
 
         character_input = self.screen.query_one(Input)
-        self.set_focus(character_input) #FIXME: This works, but it's not a robust solution
-                                        #       And should maybe just be added in the screen constructor?
+        self.set_focus(character_input)         #FIXME: This works, but it's not a robust solution
+                                                #       And should maybe just be added in the screen constructor?
 
-    def on_actor_added(self, new_actor: Actor | None) -> None:
+    def on_actor_added(self, new_actor: Actor | None):
         if new_actor is None:
             return
 
-        table = self.query_one(DataTable)
-        row_count = table.row_count
-        if row_count == 0:
-            h_value = 3
-        else:
-            h_value = 1
-        table.add_row((new_actor.init_roll), (new_actor.name), (new_actor.player_name), (new_actor.hp), (new_actor.ac), (new_actor.condition), (new_actor.notes), height=h_value)
+        initiative.add_actor(new_actor)
+
+        # table = self.query_one(DataTable)
+        # table.add_row((new_actor.init_roll), (new_actor.name), (new_actor.player_name), (new_actor.hp), (new_actor.ac), (new_actor.condition), (new_actor.notes))
 
     def next_turn(self) -> None:
         pass
 
 if __name__ == "__main__":
-    table_columns = main()
-    initiative_list = []
+
+    initiative = InitiativeList([])
     app = InitiativeApp()
     app.run()
