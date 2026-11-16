@@ -23,7 +23,9 @@ class InitiativeList:
         current_index = int(self.get_current_turn())
 
         # Loop back around to the start if necessary
-        if current_index + 1 == len(self.actors):
+        if current_index == 0 and self.current_round == 0:
+            self.current_round = 1
+        elif current_index + 1 == len(self.actors):
             self.current_turn_index = 0
             self.current_round += 1
         else:
